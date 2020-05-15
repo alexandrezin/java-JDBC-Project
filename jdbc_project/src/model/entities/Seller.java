@@ -3,7 +3,7 @@ package model.entities;
 import java.io.Serializable;
 import java.util.Date;
 
-public class seller implements Serializable{
+public class Seller implements Serializable{
 
 	private static final long serialVersionUID = 1L;
 	
@@ -15,10 +15,10 @@ public class seller implements Serializable{
 	
 	private Department department;
 	
-	public seller () {
+	public Seller () {
 	}
 	
-	public seller(int id, String name, String email, Date birthDate, Double income, Department department) {
+	public Seller(int id, String name, String email, Date birthDate, Double income, Department department) {
 		super();
 		this.id = id;
 		this.name = name;
@@ -97,7 +97,7 @@ public class seller implements Serializable{
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		seller other = (seller) obj;
+		Seller other = (Seller) obj;
 		if (id != other.id)
 			return false;
 		return true;
