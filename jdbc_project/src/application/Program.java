@@ -15,9 +15,10 @@ public class Program {
 		
 		DepartmentDao departmentDao = DaoFactory.createDepartmentDao();
 		//SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-		//SellerDao sellerDao = DaoFactory.createSellerDao();
+		SellerDao sellerDao = DaoFactory.createSellerDao();
 		
-		departmentDao.update(new Department(3, "Jardim"));
+		departmentDao.deleteId(3);
+		sellerDao.deleteId(1);
 	}
 
 }
