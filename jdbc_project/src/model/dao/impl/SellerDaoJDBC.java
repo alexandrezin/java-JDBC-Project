@@ -6,6 +6,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 
+import db.DB;
 import model.dao.SellerDao;
 import model.entities.Department;
 import model.entities.Seller;
@@ -19,13 +20,30 @@ public class SellerDaoJDBC implements SellerDao{
 	}
 
 	@Override
-	public void insert(Seller Seller) {
-		// TODO Auto-generated method stub
+	public void insert(Seller seller) {
+		PreparedStatement st = null;
 		
+		try {
+			st = conn.prepareStatement("INSERT INTO Seller (nameSeller, emailSeller, bdateSeller, incomeSeller, depidSeller)" +
+									   "VALUES (?,?,?,?,?); ");
+			st.setString(1, seller.getName());
+			st.setString(2, seller.getEmail());
+			st.setDate(3, new java.sql.Date(seller.getBirthDate().getTime()));
+			st.setDouble(4, seller.getIncome());
+			st.setInt(5, seller.getDepartment().getId());
+			
+			st.executeUpdate();
+		} 
+		catch (SQLException e) {
+			System.out.println("Impossible to insert new data, error: " + e.getMessage());
+		}
+		finally {
+			DB.closeStatement(st);
+		}
 	}
 
 	@Override
-	public void update(Seller Seller) {
+	public void update(Seller seller) {
 		// TODO Auto-generated method stub
 		
 	}
@@ -38,13 +56,13 @@ public class SellerDaoJDBC implements SellerDao{
 
 	@Override
 	public Seller getId(int id) {
-		PreparedStatement ps;
-		ResultSet rs;
+		PreparedStatement st = null;
+		ResultSet rs = null;
 		
 	    try {
-			ps = conn.prepareStatement("SELECT * FROM jdbc_project.Seller INNER JOIN Department ON Seller.depidSeller=Department.idDepartment WHERE idSeller = ?");
-			ps.setInt(1, id);
-			rs = ps.executeQuery();
+			st = conn.prepareStatement("SELECT * FROM jdbc_project.Seller INNER JOIN Department ON Seller.depidSeller=Department.idDepartment WHERE idSeller = ?");
+			st.setInt(1, id);
+			rs = st.executeQuery();
 			
 			if(rs.next()) {
 				//Find department
@@ -64,9 +82,12 @@ public class SellerDaoJDBC implements SellerDao{
 			}
 		} 
 	    catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			System.out.println("Impossible to get this information, error: " + e.getMessage());
 		}
+	    finally {
+	    	DB.closeResultSet(rs);
+	    	DB.closeStatement(st);
+	    }
 		
 		
 		

@@ -21,7 +21,20 @@ public class DepartmentDaoJDBC implements DepartmentDao{
 	
 	@Override
 	public void insert(Department department) {
-		// TODO Auto-generated method stub
+		PreparedStatement st = null;
+		
+		try {
+			st = conn.prepareStatement("INSERT INTO Department (nameDepartment) "+
+									   "VALUES (?)");
+			st.setString(1, department.getName());
+			st.executeUpdate();
+		} 
+		catch (SQLException e) {
+			System.out.println("Impossible to insert new data, error: " + e.getMessage());
+		}
+		finally {
+			DB.closeStatement(st);
+		}
 		
 	}
 
