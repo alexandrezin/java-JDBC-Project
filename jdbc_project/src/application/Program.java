@@ -2,6 +2,8 @@ package application;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.List;
 
 import model.dao.DaoFactory;
 import model.dao.DepartmentDao;
@@ -17,8 +19,20 @@ public class Program {
 		//SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 		SellerDao sellerDao = DaoFactory.createSellerDao();
 		
-		departmentDao.deleteId(3);
-		sellerDao.deleteId(1);
+		List<Seller> sellerList = new ArrayList<Seller>();
+		sellerList = sellerDao.getAll();
+		
+		for (Seller x : sellerList) {
+			System.out.println(x);
+		}
+		
+		List<Department> departmentList = new ArrayList<Department>();
+		departmentList = departmentDao.getAll();
+		
+		for (Department x : departmentList) {
+			System.out.println(x);
+		}
+	
 	}
 
 }

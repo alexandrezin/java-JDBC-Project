@@ -4,6 +4,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -105,7 +107,28 @@ public class DepartmentDaoJDBC implements DepartmentDao{
 
 	@Override
 	public List<Department> getAll() {
-		// TODO Auto-generated method stub
+		List<Department> departmentList = new ArrayList<Department>();
+		ResultSet rs = null;
+		Statement st = null; 
+		
+		try {
+			st = conn.createStatement();
+			rs = st.executeQuery("SELECT * FROM Department");
+			
+			while (rs.next()) {
+				departmentList.add(new Department(rs.getInt("idDepartment"), rs.getString("nameDepartment")));
+			}
+			
+			return departmentList;
+		} 
+		catch (SQLException e) {
+			System.out.println("Impossible to get all entries, error: " + e.getMessage());
+		}
+		finally {
+			DB.closeResultSet(rs);
+			DB.closeStatement(st);
+		}
+		
 		return null;
 	}
 

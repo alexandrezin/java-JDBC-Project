@@ -4,6 +4,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.List;
 
 import db.DB;
@@ -127,7 +129,41 @@ public class SellerDaoJDBC implements SellerDao{
 
 	@Override
 	public List<Seller> getAll() {
-		// TODO Auto-generated method stub
+		List<Seller> sellerList = new ArrayList<Seller>();
+		Statement st = null;
+		ResultSet rs = null;
+		
+		try {
+			st = conn.createStatement();
+			rs = st.executeQuery("SELECT * FROM Seller INNER JOIN Department ON Seller.depidSeller = Department.idDepartment");
+			
+			while(rs.next()) {
+				Seller seller = new Seller();
+				Department department = new Department();
+				
+				seller.setId(rs.getInt("idSeller"));
+				seller.setName(rs.getString("nameSeller"));
+				seller.setEmail(rs.getString("emailSeller"));
+				seller.setBirthDate(rs.getDate("bdateSeller"));
+				seller.setIncome(rs.getDouble("incomeSeller"));
+				
+				department.setId(rs.getInt("idDepartment"));
+				department.setName(rs.getString("nameDepartment"));
+				
+				seller.setDepartment(department);
+				sellerList.add(seller);
+			}
+			
+			return sellerList;
+		} 
+		catch (SQLException e) {
+			System.out.println("Impossible to get all entries, error: " + e.getMessage());
+		}
+		finally {
+			DB.closeResultSet(rs);
+			DB.closeStatement(st);
+		}
+		
 		return null;
 	}
 	
