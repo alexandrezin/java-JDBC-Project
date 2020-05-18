@@ -17,7 +17,7 @@ public class Program {
 		//SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 		//SellerDao sellerDao = DaoFactory.createSellerDao();
 		
-		departmentDao.insert(new Department("Toalhas"));
+		departmentDao.update(new Department(3, "Jardim"));
 	}
 
 }
